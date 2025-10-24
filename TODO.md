@@ -11,3 +11,4 @@
 3. 
 
 ## Additional Features
+1. Notification for all (possibly email)
