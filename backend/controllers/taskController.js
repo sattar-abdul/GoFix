@@ -4,13 +4,21 @@ import cloudinary from "../config/cloudinary.js";
 export const postTask = async (req, res) => {
   try {
     let imageUrl = "";
+
     if (req.file) {
-      const result = await cloudinary.uploader
-        .upload_stream({ folder: "tasks" }, (error, result) => {
-          if (error) throw error;
-          imageUrl = result.secure_url;
-        })
-        .end(req.file.buffer);
+      // Upload image to Cloudinary using promise
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "tasks" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+
+      imageUrl = result.secure_url;
     }
 
     const task = await Task.create({
@@ -18,14 +26,17 @@ export const postTask = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
-      image: imageUrl,
+      image: imageUrl, // empty string if no image uploaded
     });
 
     res.status(201).json(task);
   } catch (error) {
+    console.error("postTask error:", error);
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 export const getTasks = async (req, res) => {
   try {
