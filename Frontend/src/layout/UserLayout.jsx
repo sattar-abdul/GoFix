@@ -32,7 +32,6 @@ export default function UserLayout() {
     { text: "Dashboard Home", path: "/user/dashboard" },
     { text: "Post a Service Request", path: "/user/post-request" },
     { text: "My Job Requests", path: "/user/requests" },
-    { text: "Chat", path: "/chat" },
   ];
 
   const drawer = (

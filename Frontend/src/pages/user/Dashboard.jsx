@@ -1,6 +1,5 @@
 // src/pages/user/Dashboard.jsx
 
-import React from "react";
 import { Typography, Card, CardContent } from "@mui/material";
 
 export default function Dashboard() {

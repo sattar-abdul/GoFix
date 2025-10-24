@@ -183,7 +183,7 @@ export default function AcceptedWork() {
                   {/* Chat Button */}
                   <Button
                     variant="outlined"
-                    onClick={() => navigate(`/chat/${task._id}`)}
+                    onClick={() => navigate(`/provider/chat/${task._id}`)}
                     fullWidth
                   >
                     Chat

@@ -38,7 +38,6 @@ function App() {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/chat/:taskId" element={<ChatPage />} />
 
             {/* User Dashboard Routes */}
             <Route
@@ -52,6 +51,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="post-request" element={<PostServiceRequest />} />
               <Route path="requests" element={<Requests />} />
+              <Route path="chat/:taskId" element={<ChatPage />} />
             </Route>
 
             {/* Provider Dashboard Routes */}
@@ -67,6 +67,7 @@ function App() {
               <Route path="browse" element={<BrowseJobs />} />
               <Route path="bids" element={<MyBids />} />
               <Route path="work" element={<AcceptedWork />} />
+              <Route path="chat/:taskId" element={<ChatPage />} />
             </Route>
 
             {/* Catch-all */}

@@ -33,7 +33,6 @@ export default function ProviderLayout() {
     { text: "Browse Jobs", path: "/provider/browse" },
     { text: "My Bids", path: "/provider/bids" },
     { text: "Accepted Work", path: "/provider/work" },
-    { text: "Chat", path: "/chat" },
   ];
 
   const drawer = (

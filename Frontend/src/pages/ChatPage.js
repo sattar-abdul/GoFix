@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import io from "socket.io-client";
-import axios from "axios"; // fixed typo
+import axios from "axios";
 
 const socket = io("http://localhost:5000");
 

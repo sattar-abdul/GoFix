@@ -251,7 +251,7 @@ export default function Requests() {
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() => navigate(`/chat/${task._id}`)}
+                      onClick={() => navigate(`/user/chat/${task._id}`)}
                       fullWidth
                     >
                       Chat with Provider
