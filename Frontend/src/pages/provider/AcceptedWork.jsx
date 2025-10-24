@@ -15,8 +15,10 @@ import {
   DialogActions,
 } from "@mui/material";
 import { tasksAPI } from "../../utils/api.js";
+import { useNavigate } from "react-router-dom";
 
 export default function AcceptedWork() {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -178,6 +180,16 @@ export default function AcceptedWork() {
                 </CardContent>
 
                 <CardActions>
+                  {/* Chat Button */}
+                  <Button
+                    variant="outlined"
+                    onClick={() => navigate(`/chat/${task._id}`)}
+                    fullWidth
+                  >
+                    Chat
+                  </Button>
+
+                  {/* Complete Task Button */}
                   {task.status === "assigned" && (
                     <Button
                       variant="contained"

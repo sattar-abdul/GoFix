@@ -13,16 +13,20 @@ import {
   Avatar,
 } from "@mui/material";
 import { chatAPI } from "../utils/api.js";
+import { useParams } from "react-router-dom";
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [taskId, setTaskId] = useState("");
   const [loading, setLoading] = useState(false);
+  const { taskId } = useParams();
+
+  useEffect(() => {
+    if (taskId) fetchChat();
+  }, [taskId]);
 
   const fetchChat = async () => {
     if (!taskId) return;
-    
     setLoading(true);
     try {
       const response = await chatAPI.getChat(taskId);
@@ -36,14 +40,8 @@ export default function ChatPage() {
 
   const sendMessage = async () => {
     if (!newMessage.trim() || !taskId) return;
-
     try {
-      await chatAPI.sendMessage({
-        taskId,
-        sender: localStorage.getItem('userToken') ? 'user' : 'provider',
-        message: newMessage
-      });
-      
+      await chatAPI.sendMessage({ taskId, message: newMessage });
       setNewMessage("");
       fetchChat(); // Refresh messages
     } catch (error) {
@@ -52,37 +50,20 @@ export default function ChatPage() {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 2 }}>
       <Typography variant="h4" gutterBottom>
         Chat
       </Typography>
-      
+
       <Card>
         <CardContent>
-          <TextField
-            label="Enter Task ID"
-            value={taskId}
-            onChange={(e) => setTaskId(e.target.value)}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
-          
-          <Button 
-            variant="contained" 
-            onClick={fetchChat}
-            disabled={!taskId}
-            sx={{ mb: 2 }}
-          >
-            Load Chat
-          </Button>
-          
-          <Paper 
-            sx={{ 
-              height: 400, 
-              overflow: 'auto', 
-              p: 2, 
+          <Paper
+            sx={{
+              height: 400,
+              overflow: "auto",
+              p: 2,
               mb: 2,
-              bgcolor: 'grey.50'
+              bgcolor: "grey.50",
             }}
           >
             {loading ? (
@@ -94,26 +75,38 @@ export default function ChatPage() {
             ) : (
               <List>
                 {messages.map((message, index) => (
-                  <ListItem key={index} sx={{ 
-                    flexDirection: message.sender === 'user' ? 'row-reverse' : 'row',
-                    alignItems: 'flex-start'
-                  }}>
-                    <Avatar sx={{ 
-                      bgcolor: message.sender === 'user' ? 'primary.main' : 'secondary.main',
-                      mr: message.sender === 'user' ? 0 : 1,
-                      ml: message.sender === 'user' ? 1 : 0
-                    }}>
-                      {message.sender === 'user' ? 'U' : 'P'}
+                  <ListItem
+                    key={index}
+                    sx={{
+                      flexDirection:
+                        message.sender === "user" ? "row-reverse" : "row",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor:
+                          message.sender === "user"
+                            ? "primary.main"
+                            : "secondary.main",
+                        mr: message.sender === "user" ? 0 : 1,
+                        ml: message.sender === "user" ? 1 : 0,
+                      }}
+                    >
+                      {message.sender === "user" ? "U" : "P"}
                     </Avatar>
                     <ListItemText
                       primary={message.message}
                       secondary={new Date(message.timestamp).toLocaleString()}
                       sx={{
-                        textAlign: message.sender === 'user' ? 'right' : 'left',
-                        bgcolor: message.sender === 'user' ? 'primary.light' : 'grey.200',
+                        textAlign: message.sender === "user" ? "right" : "left",
+                        bgcolor:
+                          message.sender === "user"
+                            ? "primary.light"
+                            : "grey.200",
                         p: 1,
                         borderRadius: 1,
-                        maxWidth: '70%'
+                        maxWidth: "70%",
                       }}
                     />
                   </ListItem>
@@ -121,18 +114,18 @@ export default function ChatPage() {
               </List>
             )}
           </Paper>
-          
-          <Box sx={{ display: 'flex', gap: 1 }}>
+
+          <Box sx={{ display: "flex", gap: 1 }}>
             <TextField
               label="Type your message..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+              onKeyPress={(e) => e.key === "Enter" && sendMessage()}
               fullWidth
               disabled={!taskId}
             />
-            <Button 
-              variant="contained" 
+            <Button
+              variant="contained"
               onClick={sendMessage}
               disabled={!newMessage.trim() || !taskId}
             >

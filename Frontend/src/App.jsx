@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Contexts
@@ -39,7 +38,7 @@ function App() {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/chat/:taskId" element={<ChatPage />} />
 
             {/* User Dashboard Routes */}
             <Route
