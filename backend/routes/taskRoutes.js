@@ -9,6 +9,7 @@ import {
 import upload from "../middleware/upload.js";
 import auth from "../middleware/authMiddleware.js";
 import { getProviderAssignedTasks } from "../controllers/taskController.js";
+import { selectBid } from "../controllers/taskController.js";
 
 const router = express.Router();
 
@@ -29,5 +30,8 @@ router.post("/:taskId/rate", auth, rateProvider);
 
 // Get tasks assigned to the logged-in provider
 router.get("/assigned/me", auth, getProviderAssignedTasks);
+
+// Select a bid (user only)
+router.put("/:taskId/select-bid/:bidId", auth, selectBid);
 
 export default router;

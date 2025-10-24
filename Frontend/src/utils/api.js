@@ -57,12 +57,14 @@ export const tasksAPI = {
   completeTask: (taskId) => api.put(`/tasks/${taskId}/complete`),
   rateProvider: (taskId, ratingData) =>
     api.post(`/tasks/${taskId}/rate`, ratingData),
+  selectBid: ({ taskId, bidId }) =>
+    api.put(`/tasks/${taskId}/select-bid/${bidId}`),
 };
 
 // Bids API
 export const bidsAPI = {
   placeBid: (bidData) => api.post("/bids/place", bidData),
-  selectBid: (bidData) => api.put("/bids/select", bidData),
+  selectBidByAdmin: (bidData) => api.put("/bids/select", bidData),
 };
 
 // Chat API

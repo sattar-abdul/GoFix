@@ -38,7 +38,7 @@ export default function BrowseJobs() {
 
   const handlePlaceBid = async (taskId) => {
     const proposedCost = prompt("Enter your proposed cost:");
-    const proposedTime = prompt("Enter proposed completion time (e.g., '2 days'):");
+    const proposedTime = prompt("Enter time of arrival (e.g., '2 days'):");
     
     if (!proposedCost || !proposedTime) return;
 
