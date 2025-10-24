@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   Card,
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { tasksAPI, bidsAPI } from "../../utils/api.js";
+import DefaultImg from "../../assets/default-service.jpg";
 
 export default function BrowseJobs() {
   const [tasks, setTasks] = useState([]);
@@ -130,10 +131,10 @@ export default function BrowseJobs() {
                     )}
                   </Typography>
                   
-                  {task.image && (
+                  {(task.image || DefaultImg) && (
                     <Box sx={{ mt: 1 }}>
                       <img 
-                        src={task.image} 
+                        src={task.image || DefaultImg} 
                         alt={task.title}
                         style={{ 
                           width: '100%', 

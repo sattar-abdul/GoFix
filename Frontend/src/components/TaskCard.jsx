@@ -1,5 +1,4 @@
 // src/components/TaskCard.jsx
-import React from "react";
 import {
   Card,
   CardContent,
@@ -10,6 +9,8 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import DefaultImg from "../assets/default-service.jpg";
+
 
 export default function TaskCard({
   task,
@@ -44,7 +45,7 @@ export default function TaskCard({
 
         <Box sx={{ mt: 1, mb: 1 }}>
           <img
-            src={task.image || "/default-task.png"}
+            src={task.image || DefaultImg}
             alt={task.title}
             style={{
               width: "100%",
