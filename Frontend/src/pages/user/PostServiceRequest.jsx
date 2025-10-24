@@ -115,7 +115,7 @@ export default function PostServiceRequest() {
                 native: true,
               }}
             >
-              <option value="">Select a category</option>
+              <option value=""></option>
               {categories.map((category) => (
                 <option key={category} value={category}>
                   {category}
