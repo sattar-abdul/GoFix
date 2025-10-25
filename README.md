@@ -62,16 +62,67 @@ GoFix/
 │   │   ├── bidRoutes.js
 │   │   ├── chatRoutes.js
 │   │   └── taskRoutes.js
+│   ├── .env
+│   ├── .gitignore
 │   ├── server.js
 │   └── package.json
+|
 ├── Frontend/
+│   ├── public/
 │   ├── src/
+│   │   ├── api/
+|   │   │   └── task.js
+|   |   |
+│   │   ├── assets/
+|   |   |
 │   │   ├── components/
+|   │   │   ├── BidsDialog.jsx
+|   │   │   ├── Navbar.jsx
+|   │   │   ├── ProtectedProviderRoute.jsx
+|   │   │   ├── ProtectedUserRoute.jsx
+|   │   │   ├── RatingDialog.jsx
+|   │   │   └── TaskCard.jsx
+|   |   |
 │   │   ├── contexts/
+|   │   │   ├── AuthContext.jsx
+|   │   │   ├── ProviderAuthContext.jsx
+|   │   │   └── UserAuthContext.jsx
+|   |   |
 │   │   ├── layout/
+|   │   │   ├── ProviderLayout.jsx
+|   │   │   └── UserLayout.jsx
+|   |   |
 │   │   ├── pages/
+|   │   │   ├── provider/
+|   |   │   │   ├── AcceptedWork.jsx
+|   |   │   │   ├── BrowserJobs.jsx
+|   |   │   │   ├── MyBids.jsx
+|   |   │   │   └── ProviderDashboard.jsx
+|   |   |   |
+|   │   │   ├── user/
+|   |   │   │   ├── PostServiceRequest.jsx
+|   |   │   │   ├── Requests.jsx
+|   |   │   │   └── Dashboard.jsx
+|   |   |   |
+|   │   │   ├── AuthPage.js
+|   │   │   ├── ChatPage.js
+|   │   │   ├── ChatPage.jsx
+|   │   │   ├── Login.jsx
+|   │   │   ├── NotFound.jsx
+|   │   │   ├── Register.jsx
+|   │   │   └── TaskPost.js
+|   |   |
 │   │   ├── utils/
-│   │   └── App.jsx
+|   │   │   ├── api.js
+|   │   │   └── ProtectedRoute.jsx
+|   |   |
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   ├── index.js
+│   │   ├── main.jsx
+│   │   ├── theme.js
+│   │   ├── .gitignore
+│   │   └── index.html
 │   └── package.json
 └── README.md
 ```
@@ -172,21 +223,9 @@ The frontend will run on `http://localhost:5173`
 
 ## Future Enhancements
 
-- Real-time chat functionality
 - Payment integration
-- Rating and review system
 - Push notifications
 - Advanced search and filtering
 - Mobile app development
 
-## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## License
-
-This project is licensed under the ISC License.
