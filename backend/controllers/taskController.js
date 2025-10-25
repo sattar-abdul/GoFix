@@ -1,12 +1,13 @@
 import Task from "../models/Task.js";
 import cloudinary from "../config/cloudinary.js";
+import sendEmail from "../utils/sendEmail.js";
+import User from "../models/User.js";
 
 export const postTask = async (req, res) => {
   try {
     let imageUrl = "";
 
     if (req.file) {
-      // Upload image to Cloudinary using promise
       const result = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           { folder: "tasks" },
@@ -26,8 +27,24 @@ export const postTask = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
-      image: imageUrl, // empty string if no image uploaded
+      image: imageUrl,
     });
+
+    // Async email to owner of the post
+    (async () => {
+      try {
+        const taskOwner = await User.findById(req.user.id);
+        if (taskOwner?.email) {
+          await sendEmail(
+            taskOwner.email,
+            "Task Posted Successfully ✅",
+            `<p>Hello ${taskOwner.name}, your task "${task.title}" has been posted successfully.</p>`
+          );
+        }
+      } catch (err) {
+        console.error("Email error (postTask):", err);
+      }
+    })();
 
     res.status(201).json(task);
   } catch (error) {
@@ -52,7 +69,7 @@ export const getUserTasks = async (req, res) => {
     const tasks = await Task.find({ userId: req.user.id })
       .populate({
         path: "selectedProviderId",
-        select: "name email averageRating", // Include only the needed fields
+        select: "name email averageRating",
       })
       .sort({ createdAt: -1 });
 
@@ -67,9 +84,7 @@ export const completeTask = async (req, res) => {
     const { taskId } = req.params;
     const task = await Task.findById(taskId);
 
-    if (!task) {
-      return res.status(404).json({ message: "Task not found" });
-    }
+    if (!task) return res.status(404).json({ message: "Task not found" });
 
     if (task.selectedProviderId.toString() !== req.user.id) {
       return res
@@ -87,9 +102,27 @@ export const completeTask = async (req, res) => {
     task.completedAt = new Date();
     await task.save();
 
-    // Update provider's completed tasks count
-    const User = (await import("../models/User.js")).default;
     await User.findByIdAndUpdate(req.user.id, { $inc: { completedTasks: 1 } });
+
+    // Send email to provider
+    const provider = await User.findById(req.user.id);
+    if (provider?.email) {
+      sendEmail(
+        provider.email,
+        "Task Completed",
+        `Hello ${provider.name}, you have successfully completed the task "${task.title}".`
+      );
+    }
+
+    // Send email to user
+    const user = await User.findById(task.userId);
+    if (user?.email) {
+      sendEmail(
+        user.email,
+        "Task Completed",
+        `Hello ${user.name}, your task "${task.title}" has been marked as completed by the provider.`
+      );
+    }
 
     res.json({ message: "Task completed successfully", task });
   } catch (error) {
@@ -103,10 +136,7 @@ export const rateProvider = async (req, res) => {
     const { score, review } = req.body;
 
     const task = await Task.findById(taskId);
-
-    if (!task) {
-      return res.status(404).json({ message: "Task not found" });
-    }
+    if (!task) return res.status(404).json({ message: "Task not found" });
 
     if (task.userId.toString() !== req.user.id) {
       return res
@@ -124,18 +154,10 @@ export const rateProvider = async (req, res) => {
       return res.status(400).json({ message: "Task has already been rated" });
     }
 
-    // Update task rating
-    task.rating = {
-      score,
-      review,
-      ratedAt: new Date(),
-    };
+    task.rating = { score, review, ratedAt: new Date() };
     await task.save();
 
-    // Update provider's average rating
-    const User = (await import("../models/User.js")).default;
     const provider = await User.findById(task.selectedProviderId);
-
     if (provider) {
       const newTotalRatings = provider.totalRatings + 1;
       const newAverageRating =
@@ -143,9 +165,18 @@ export const rateProvider = async (req, res) => {
         newTotalRatings;
 
       await User.findByIdAndUpdate(task.selectedProviderId, {
-        averageRating: Math.round(newAverageRating * 10) / 10, // Round to 1 decimal place
+        averageRating: Math.round(newAverageRating * 10) / 10,
         totalRatings: newTotalRatings,
       });
+
+      // Send email to provider about new rating
+      if (provider.email) {
+        sendEmail(
+          provider.email,
+          "New Rating Received",
+          `Hello ${provider.name}, you received a rating of ${score} for task "${task.title}". Review: ${review}`
+        );
+      }
     }
 
     res.json({ message: "Rating submitted successfully", task });
@@ -174,23 +205,40 @@ export const selectBid = async (req, res) => {
   try {
     const { taskId, bidId } = req.params;
     const task = await Task.findById(taskId);
-
     if (!task) return res.status(404).json({ message: "Task not found" });
 
     const bid = task.bids.id(bidId);
     if (!bid) return res.status(404).json({ message: "Bid not found" });
 
-    // mark selected bid
     bid.status = "accepted";
     task.selectedProviderId = bid.providerId;
 
-    // reject other bids
     task.bids.forEach((b) => {
       if (b._id.toString() !== bidId) b.status = "rejected";
     });
 
     task.status = "assigned";
     await task.save();
+
+    // Send email to provider about selection
+    const provider = await User.findById(bid.providerId);
+    if (provider?.email) {
+      sendEmail(
+        provider.email,
+        "Bid Accepted",
+        `Hello ${provider.name}, your bid for task "${task.title}" has been accepted.`
+      );
+    }
+
+    // Send email to task owner
+    const user = await User.findById(task.userId);
+    if (user?.email) {
+      sendEmail(
+        user.email,
+        "Provider Selected",
+        `Hello ${user.name}, you have selected a provider for your task "${task.title}".`
+      );
+    }
 
     res.json({ message: "Provider selected successfully", task });
   } catch (error) {

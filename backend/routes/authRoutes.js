@@ -12,8 +12,7 @@ router.post("/register", async (req, res) => {
     const { name, email, password, role, phone, city, category } = req.body;
 
     const exist = await User.findOne({ email });
-    if (exist)
-      return res.status(400).json({ message: "Email already exists" });
+    if (exist) return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -33,7 +32,7 @@ router.post("/register", async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.json({ 
+    res.json({
       message: "Registered Successfully ✅",
       token,
       id: user._id,

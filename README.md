@@ -10,6 +10,7 @@ A full-stack web application that connects users who need services with service 
 - View and manage bids from service providers
 - Select preferred providers
 - Track request status
+- Get notified for new bids on your task
 
 ### For Service Providers:
 - Register and login as a service provider
@@ -17,6 +18,7 @@ A full-stack web application that connects users who need services with service 
 - Place bids on jobs
 - Track bid status
 - View accepted work
+- Get notified for acceptance of bid
 
 ## Tech Stack
 
@@ -27,6 +29,7 @@ A full-stack web application that connects users who need services with service 
 - **Cloudinary** for image uploads
 - **Multer** for file handling
 - **bcryptjs** for password hashing
+- **nodemailer** for email notifications
 
 ### Frontend:
 - **React** with Vite
@@ -220,6 +223,7 @@ The frontend will run on `http://localhost:5173`
 ✅ Protected routes
 ✅ Real-time data updates
 ✅ Error handling and validation
+✅ Email Notifications
 
 ## Future Enhancements
 

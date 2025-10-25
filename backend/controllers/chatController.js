@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
 import Chat from "../models/Chat.js";
 import Task from "../models/Task.js";
+import User from "../models/User.js";
+import sendEmail from "../utils/sendEmail.js";
 
 export const getChat = async (req, res) => {
   try {
     const { taskId } = req.params;
 
-    // Let Mongoose cast string to ObjectId automatically
     const chat = await Chat.findOne({ taskId })
       .populate("userId", "name")
       .populate("providerId", "name");
@@ -22,21 +22,15 @@ export const getChat = async (req, res) => {
 
 export const saveMessage = async (req, res) => {
   try {
-    console.log("saveMessage body:", req.body);
-    console.log("req.user:", req.user);
-
     const { taskId, message } = req.body;
-    if (!taskId || !message) {
+    if (!taskId || !message)
       return res.status(400).json({ message: "Missing fields" });
-    }
 
-    const userRole = req.user.role; // 'user' or 'provider'
+    const userRole = req.user.role;
     const userId = req.user.id;
 
-    // Find chat
     let chat = await Chat.findOne({ taskId });
 
-    // If no chat exists, create it
     if (!chat) {
       const task = await Task.findById(taskId);
       if (!task) return res.status(404).json({ message: "Task not found" });
@@ -49,9 +43,29 @@ export const saveMessage = async (req, res) => {
       });
     }
 
-    // Push new message
     chat.messages.push({ sender: userRole, message });
     await chat.save();
+
+    // Async email to other participant
+    (async () => {
+      try {
+        let recipient;
+        if (userRole === "user")
+          recipient = await User.findById(chat.providerId);
+        else recipient = await User.findById(chat.userId);
+
+        if (recipient?.email) {
+          await sendEmail(
+            recipient.email,
+            "New Message Received 💬",
+            `<p>Hello ${recipient.name}, you have a new message regarding task ID: ${taskId}.</p>
+             <p>Message: "${message}"</p>`
+          );
+        }
+      } catch (err) {
+        console.error("Email error (chat message):", err);
+      }
+    })();
 
     res.status(201).json(chat);
   } catch (error) {
