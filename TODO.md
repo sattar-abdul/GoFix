@@ -9,6 +9,7 @@
 1. Add Navbar and Side bar in Chat page. ✅
 2. Remove Chat tab from sidebar of User & Provider dashboard ✅
 3. Fix UI of Task listing for both user & provider dashboard.
+4. Location specific jobs.
 
 ## Additional Features
-1. Notification for all (possibly email)
+1. Notification for all (possibly email) ✅
