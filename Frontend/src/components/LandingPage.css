@@ -1,0 +1,412 @@
+/* components/LandingPage.css */
+.landing-page {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Header Styles */
+.header {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  color: #333 !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.logo {
+  font-weight: bold !important;
+  font-size: 1.5rem !important;
+  color: #FF6B6B !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
+}
+
+.logo-icon {
+  color: #FF6B6B;
+}
+
+.nav-links {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.nav-links .MuiButton-root {
+  color: #333 !important;
+  margin: 0 10px;
+  font-weight: 500;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.login-btn {
+  color: #FF6B6B !important;
+  border-color: #FF6B6B !important;
+}
+
+.signup-btn {
+  background: linear-gradient(45deg, #FF6B6B, #FF8E53) !important;
+  color: white !important;
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 120px 0 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,0 1000,1000"/></svg>');
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-weight: 700 !important;
+  margin-bottom: 20px !important;
+  line-height: 1.2 !important;
+}
+
+.highlight {
+  color: #FFD93D;
+}
+
+.hero-subtitle {
+  margin-bottom: 40px !important;
+  opacity: 0.9;
+  line-height: 1.6 !important;
+}
+
+.search-container {
+  margin-bottom: 40px;
+}
+
+.search-input {
+  background: white;
+  border-radius: 50px !important;
+}
+
+.search-input .MuiOutlinedInput-root {
+  border-radius: 50px !important;
+  padding-right: 8px;
+}
+
+.search-btn {
+  background: linear-gradient(45deg, #FF6B6B, #FF8E53) !important;
+  color: white !important;
+  margin-right: 8px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat .MuiTypography-h4 {
+  font-weight: 700 !important;
+  color: #FFD93D;
+}
+
+.hero-image {
+  position: relative;
+  height: 400px;
+}
+
+.floating-card {
+  position: absolute;
+  background: white;
+  color: #333;
+  padding: 15px 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: float 3s ease-in-out infinite;
+}
+
+.card-1 {
+  top: 50px;
+  left: 20px;
+  animation-delay: 0s;
+}
+
+.card-2 {
+  top: 250px;
+  right: 10px;
+  animation-delay: 1s;
+}
+
+.card-3 {
+  bottom: 80px;
+  left: 60px;
+  animation-delay: 2s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Services Section */
+.services-section {
+  padding: 80px 0;
+  background: #f8f9fa;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 60px !important;
+  font-weight: 700 !important;
+  color: #333;
+}
+
+.service-card {
+  height: 100%;
+  transition: all 0.3s ease;
+  border: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.service-content {
+  text-align: center;
+  padding: 30px 20px !important;
+}
+
+.service-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: white;
+}
+
+.service-title {
+  font-weight: 600 !important;
+  color: #333;
+}
+
+/* How it Works Section */
+.how-it-works {
+  padding: 80px 0;
+  background: white;
+}
+
+.step {
+  text-align: center;
+  padding: 20px;
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 auto 20px;
+}
+
+.step .MuiTypography-h5 {
+  margin-bottom: 15px !important;
+  font-weight: 600 !important;
+  color: #333;
+}
+
+/* Features Section */
+.features-section {
+  padding: 80px 0;
+  background: #f8f9fa;
+}
+
+.feature-card {
+  text-align: center;
+  padding: 30px 20px;
+  height: 100%;
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.feature-title {
+  margin-bottom: 15px !important;
+  font-weight: 600 !important;
+  color: #333;
+}
+
+.feature-description {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  padding: 80px 0;
+  background: white;
+}
+
+.testimonial-card {
+  height: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+}
+
+.testimonial-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.testimonial-avatar {
+  background: linear-gradient(45deg, #FF6B6B, #FF8E53) !important;
+}
+
+.testimonial-comment {
+  margin-top: 15px !important;
+  font-style: italic;
+  color: #666;
+}
+
+/* CTA Section */
+.cta-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+}
+
+.cta-title {
+  margin-bottom: 20px !important;
+  font-weight: 700 !important;
+}
+
+.cta-subtitle {
+  margin-bottom: 40px !important;
+  opacity: 0.9;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn.primary {
+  background: linear-gradient(45deg, #FF6B6B, #FF8E53) !important;
+  color: white !important;
+  padding: 12px 30px !important;
+}
+
+.cta-btn.secondary {
+  border-color: white !important;
+  color: white !important;
+  padding: 12px 30px !important;
+}
+
+/* Footer */
+.footer {
+  background: #2c3e50;
+  color: white;
+  padding: 60px 0 20px;
+}
+
+.footer-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
+  margin-bottom: 15px !important;
+  color: #FF6B6B !important;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links .MuiTypography-body2 {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.footer-links .MuiTypography-body2:hover {
+  color: #FF6B6B;
+}
+
+.footer-bottom {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #34495e;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem !important;
+  }
+  
+  .hero-stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .floating-card {
+    position: static;
+    margin: 10px 0;
+  }
+  
+  .hero-image {
+    margin-top: 40px;
+    height: auto;
+  }
+}

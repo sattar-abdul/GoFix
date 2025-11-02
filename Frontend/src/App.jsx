@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 // Contexts
 import { UserAuthProvider } from "./contexts/UserAuthContext.jsx";
@@ -28,14 +28,19 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
 
+//Landing page
+import LandingPage from './components/LandingPage.jsx';
+
 function App() {
+
   return (
     <BrowserRouter>
       <UserAuthProvider>
         <ProviderAuthProvider>
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Navigate to="/login" />} />
+
+            <Route path="/" element={<LandingPage /> } />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
