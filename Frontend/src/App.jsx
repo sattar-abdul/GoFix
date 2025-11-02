@@ -30,10 +30,13 @@ import ChatPage from "./pages/ChatPage.jsx";
 
 //Landing page
 import LandingPage from './components/LandingPage.jsx';
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme.js";
 
 function App() {
 
   return (
+    <ThemeProvider theme={theme}>
     <BrowserRouter>
       <UserAuthProvider>
         <ProviderAuthProvider>
@@ -81,6 +84,7 @@ function App() {
         </ProviderAuthProvider>
       </UserAuthProvider>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

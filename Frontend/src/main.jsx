@@ -5,6 +5,6 @@ import "./App.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App /> {/* Providers are inside App */}
+      <App />
   </React.StrictMode>
 );

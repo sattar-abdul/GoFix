@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Container,
   TextField,
@@ -12,6 +12,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/UserAuthContext.jsx";
 import { useProviderAuth } from "../contexts/ProviderAuthContext.jsx";
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 
 const roles = [
   { label: "I need a service", value: "user" },
@@ -52,10 +54,18 @@ const Register = () => {
 
       // login based on role
       if (data.role === "user") {
-        userLogin(data.token, { id: data.id, name: data.name, email: data.email });
+        userLogin(data.token, {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+        });
         navigate("/user/dashboard");
       } else if (data.role === "provider") {
-        providerLogin(data.token, { id: data.id, name: data.name, email: data.email });
+        providerLogin(data.token, {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+        });
         navigate("/provider/dashboard");
       } else {
         alert("Unknown role");
@@ -66,85 +76,91 @@ const Register = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 5 }}>
-      <Typography variant="h4" gutterBottom>
-        Create Account
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-      >
-        <TextField
-          label="Name"
-          required
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-        <TextField
-          label="Email"
-          type="email"
-          required
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          required
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
+    <>
+      <Header />
 
-        <Typography>Select Role:</Typography>
-        <Box sx={{ display: "flex", gap: 2 }}>
-          {roles.map((r) => (
-            <Card
-              key={r.value}
-              sx={{
-                flex: 1,
-                border:
-                  form.role === r.value ? "2px solid blue" : "1px solid gray",
-                cursor: "pointer",
-              }}
-              onClick={() => setForm({ ...form, role: r.value })}
-            >
-              <CardContent>{r.label}</CardContent>
-            </Card>
-          ))}
+      <Container maxWidth="sm" sx={{ mt: 12, mb: 10 }}>
+        <Typography variant="h4" gutterBottom>
+          Create Account
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <TextField
+            label="Name"
+            required
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            required
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            required
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+          />
+
+          <Typography>Select Role:</Typography>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            {roles.map((r) => (
+              <Card
+                key={r.value}
+                sx={{
+                  flex: 1,
+                  border:
+                    form.role === r.value ? "2px solid #FF8E53" : "1px solid gray",
+                  cursor: "pointer",
+                }}
+                onClick={() => setForm({ ...form, role: r.value })}
+              >
+                <CardContent>{r.label}</CardContent>
+              </Card>
+            ))}
+          </Box>
+
+          {form.role === "provider" && (
+            <>
+              <TextField
+                label="Phone Number"
+                required
+                value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              />
+              <TextField
+                label="City"
+                required
+                value={form.city}
+                onChange={(e) => setForm({ ...form, city: e.target.value })}
+              />
+              <TextField
+                label="Service Category"
+                required
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+              />
+            </>
+          )}
+
+          <Button type="submit" variant="contained">
+            Register
+          </Button>
+          <Button onClick={() => navigate("/login")}>
+            Already have an account? Login
+          </Button>
         </Box>
+      </Container>
 
-        {form.role === "provider" && (
-          <>
-            <TextField
-              label="Phone Number"
-              required
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            />
-            <TextField
-              label="City"
-              required
-              value={form.city}
-              onChange={(e) => setForm({ ...form, city: e.target.value })}
-            />
-            <TextField
-              label="Service Category"
-              required
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-            />
-          </>
-        )}
-
-        <Button type="submit" variant="contained">
-          Register
-        </Button>
-        <Button onClick={() => navigate("/login")}>
-          Already have an account? Login
-        </Button>
-      </Box>
-    </Container>
+      <Footer />
+    </>
   );
 };
 
