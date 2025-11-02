@@ -146,7 +146,7 @@ const LandingPage = () => {
       </section>
 
       {/* Services Section */}
-      <section className="services-section">
+      <section className="services-section" id="services">
         <Container maxWidth="lg">
           <Typography variant="h3" className="section-title">
             Popular Services
@@ -174,7 +174,7 @@ const LandingPage = () => {
       </section>
 
       {/* How it Works Section */}
-      <section className="how-it-works">
+      <section className="how-it-works" id="working">
         <Container maxWidth="lg">
           <Typography variant="h3" className="section-title">
             How GoFix Works
@@ -219,7 +219,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="features-section">
+      <section className="features-section" id="features">
         <Container
           maxWidth="lg"
           sx={{

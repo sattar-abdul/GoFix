@@ -13,14 +13,24 @@ const Header = () => {
   return (
     <AppBar position="fixed" className="header">
       <Toolbar>
-        <Typography variant="h6" className="logo">
-          <Build className="logo-icon" />
-          GoFix
-        </Typography>
+        {/* Logo */}
+        <a style={{ textDecoration: "none", color: "inherit" }} href="/">
+          <Typography variant="h6" className="logo">
+            <Build className="logo-icon" />
+            GoFix
+          </Typography>
+        </a>
+        
         <div className="nav-links">
-          <Button color="inherit">Services</Button>
-          <Button color="inherit">How it Works</Button>
-          <Button color="inherit">About</Button>
+          <Button color="inherit" href="#services">
+            Services
+          </Button>
+          <Button color="inherit" href="#working">
+            How it Works
+          </Button>
+          <Button color="inherit" href="#features">
+            Features
+          </Button>
         </div>
 
         {/* Auth Buttons */}
@@ -40,7 +50,8 @@ const Header = () => {
             </Box>
           ) : (
             <Button
-              variant="outlined" className="login-btn"
+              variant="outlined"
+              className="login-btn"
               // onClick={handleLogout} ⌛todo
             >
               Logout

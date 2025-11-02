@@ -1,21 +1,31 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography, Box } from "@mui/material";
 import { Build } from "@mui/icons-material";
 import "./LandingPage.css";
 
 const Footer = () => {
   return (
-    <footer className="footer" >
+    <footer className="footer">
       <Container maxWidth="lg">
-        <Grid container spacing={4} >
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" className="footer-logo">
-              <Build /> GoFix
-            </Typography>
-            <Typography variant="body2">
-              Your trusted marketplace for all service needs
-            </Typography>
+        <Grid
+          container
+          spacing={4}
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          {/* Logo & Description */}
+          <Grid item xs={12} sm={6} md={4}>
+            <Box display="flex" flexDirection="column" alignItems={{ xs: "center", md: "flex-start" }} textAlign={{ xs: "center", md: "left" }}>
+              <Typography variant="h6" className="footer-logo" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Build /> GoFix
+              </Typography>
+              <Typography variant="body2">
+                Your trusted marketplace for all service needs
+              </Typography>
+            </Box>
           </Grid>
-          <Grid item xs={12} md={2}>
+
+          {/* Footer Links */}
+          <Grid item xs={6} sm={4} md={2}>
             <Typography variant="h6">Services</Typography>
             <div className="footer-links">
               <Typography variant="body2">Home Services</Typography>
@@ -24,7 +34,8 @@ const Footer = () => {
               <Typography variant="body2">Tech Support</Typography>
             </div>
           </Grid>
-          <Grid item xs={12} md={2}>
+
+          <Grid item xs={6} sm={4} md={2}>
             <Typography variant="h6">Company</Typography>
             <div className="footer-links">
               <Typography variant="body2">About Us</Typography>
@@ -33,7 +44,8 @@ const Footer = () => {
               <Typography variant="body2">Contact</Typography>
             </div>
           </Grid>
-          <Grid item xs={12} md={2}>
+
+          <Grid item xs={6} sm={4} md={2}>
             <Typography variant="h6">Support</Typography>
             <div className="footer-links">
               <Typography variant="body2">Help Center</Typography>
@@ -42,7 +54,8 @@ const Footer = () => {
               <Typography variant="body2">Privacy</Typography>
             </div>
           </Grid>
-          <Grid item xs={12} md={2}>
+
+          <Grid item xs={6} sm={4} md={2}>
             <Typography variant="h6">Connect</Typography>
             <div className="footer-links">
               <Typography variant="body2">Facebook</Typography>
@@ -52,11 +65,19 @@ const Footer = () => {
             </div>
           </Grid>
         </Grid>
-        <div className="footer-bottom">
+
+        {/* Bottom section */}
+        <Box
+          className="footer-bottom"
+          mt={4}
+          textAlign="center"
+          display="flex"
+          justifyContent="center"
+        >
           <Typography variant="body2">
             © 2025 GoFix. All rights reserved.
           </Typography>
-        </div>
+        </Box>
       </Container>
     </footer>
   );
