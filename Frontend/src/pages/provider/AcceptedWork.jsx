@@ -18,7 +18,6 @@ import { tasksAPI } from "../../utils/api.js";
 import { useNavigate } from "react-router-dom";
 import DefaultImg from "../../assets/default-service.jpg";
 
-
 export default function AcceptedWork() {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
@@ -36,10 +35,6 @@ export default function AcceptedWork() {
       const response = await tasksAPI.getAssignedTasks();
       const currentUserId = localStorage.getItem("userId");
 
-      console.log("Accepted Work - Current User ID:", currentUserId);
-      console.log("Accepted Work - All Tasks:", response.data);
-
-      // Filter tasks where current user's bid was accepted
       const acceptedTasks = response.data.filter((task) => {
         const statusMatch =
           task.status === "assigned" || task.status === "completed";
@@ -47,21 +42,9 @@ export default function AcceptedWork() {
           task.selectedProviderId === currentUserId ||
           task.selectedProviderId?._id === currentUserId ||
           task.selectedProviderId?.toString() === currentUserId;
-
-        console.log("Task filter:", {
-          title: task.title,
-          status: task.status,
-          selectedProviderId: task.selectedProviderId,
-          currentUserId,
-          statusMatch,
-          providerMatch,
-          shouldInclude: statusMatch && providerMatch,
-        });
-
         return statusMatch && providerMatch;
       });
 
-      console.log("Accepted Work - Filtered tasks:", acceptedTasks);
       setTasks(acceptedTasks);
     } catch (error) {
       console.error("Error fetching accepted work:", error);
@@ -76,7 +59,7 @@ export default function AcceptedWork() {
       await tasksAPI.completeTask(taskId);
       setMessage("Task completed successfully! ✅");
       setCompleteDialogOpen(false);
-      fetchAcceptedTasks(); // Refresh tasks
+      fetchAcceptedTasks();
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to complete task");
     }
@@ -112,9 +95,27 @@ export default function AcceptedWork() {
           </Grid>
         ) : (
           tasks.map((task) => (
-            <Grid item xs={12} md={6} key={task._id}>
-              <Card>
-                <CardContent>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={task._id}
+              sx={{ display: "flex" }}
+            >
+              <Card
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "100%",
+                  width: "100%",
+                  wordWrap: "break-word",
+                  overflow: "hidden",
+                  boxSizing: "border-box",
+                }}
+              >
+                <CardContent sx={{ flexGrow: 1 }}>
                   <Box
                     sx={{
                       display: "flex",
@@ -123,7 +124,16 @@ export default function AcceptedWork() {
                       mb: 1,
                     }}
                   >
-                    <Typography variant="h6">{task.title}</Typography>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        wordBreak: "break-word",
+                        overflowWrap: "break-word",
+                        whiteSpace: "normal",
+                      }}
+                    >
+                      {task.title}
+                    </Typography>
                     <Chip label={task.status} color="success" size="small" />
                   </Box>
 
@@ -134,7 +144,16 @@ export default function AcceptedWork() {
                     sx={{ mb: 1 }}
                   />
 
-                  <Typography variant="body2" color="text.secondary" paragraph>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    paragraph
+                    sx={{
+                      wordBreak: "break-word",
+                      overflowWrap: "break-word",
+                      whiteSpace: "normal",
+                    }}
+                  >
                     {task.description}
                   </Typography>
 
@@ -181,8 +200,14 @@ export default function AcceptedWork() {
                   )}
                 </CardContent>
 
-                <CardActions>
-                  {/* Chat Button */}
+                <CardActions
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                    mt: "auto",
+                  }}
+                >
                   <Button
                     variant="outlined"
                     onClick={() => navigate(`/provider/chat/${task._id}`)}
@@ -191,7 +216,6 @@ export default function AcceptedWork() {
                     Chat
                   </Button>
 
-                  {/* Complete Task Button */}
                   {task.status === "assigned" && (
                     <Button
                       variant="contained"
@@ -209,7 +233,6 @@ export default function AcceptedWork() {
         )}
       </Grid>
 
-      {/* Complete Task Dialog */}
       <Dialog
         open={completeDialogOpen}
         onClose={() => setCompleteDialogOpen(false)}

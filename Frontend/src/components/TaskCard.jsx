@@ -11,7 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import DefaultImg from "../assets/default-service.jpg";
 
-
 export default function TaskCard({
   task,
   getStatusColor,
@@ -21,10 +20,30 @@ export default function TaskCard({
   const navigate = useNavigate();
 
   return (
-    <Card>
-      <CardContent>
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "100%",
+        width: "100%",
+        wordWrap: "break-word",
+        overflow: "hidden",
+        boxSizing: "border-box",
+      }}
+    >
+      <CardContent sx={{ flexGrow: 1 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-          <Typography variant="h6">{task.title}</Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+              whiteSpace: "normal",
+            }}
+          >
+            {task.title}
+          </Typography>
           <Chip
             label={task.status}
             color={getStatusColor(task.status)}
@@ -39,7 +58,16 @@ export default function TaskCard({
           sx={{ mb: 1 }}
         />
 
-        <Typography variant="body2" color="text.secondary" paragraph>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          paragraph
+          sx={{
+            wordBreak: "break-word",
+            overflowWrap: "break-word",
+            whiteSpace: "normal",
+          }}
+        >
           {task.description}
         </Typography>
 
@@ -61,7 +89,12 @@ export default function TaskCard({
         </Typography>
 
         {task.selectedProviderId && (
-          <Typography variant="caption" color="success.main" display="block">
+          <Typography
+            variant="caption"
+            color="success.main"
+            display="block"
+            sx={{ wordBreak: "break-word" }}
+          >
             Provider Selected: {task.selectedProviderId?.name || "Unknown"}
             {task.selectedProviderId?.averageRating && (
               <span> (⭐ {task.selectedProviderId.averageRating})</span>
@@ -80,7 +113,14 @@ export default function TaskCard({
         )}
       </CardContent>
 
-      <CardActions>
+      <CardActions
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+          mt: "auto",
+        }}
+      >
         {task.status === "open" && task.bids?.length > 0 && (
           <Button
             variant="contained"
@@ -105,7 +145,6 @@ export default function TaskCard({
         {task.selectedProviderId && task.status !== "open" && (
           <Button
             variant="outlined"
-            color="secondary"
             fullWidth
             onClick={() => navigate(`/user/chat/${task._id}`)}
           >
