@@ -40,11 +40,7 @@ export default function BidsDialog({ open, onClose, task, handleSelectBid }) {
                 >
                   {/* Provider Info */}
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    <Avatar>
-                      {provider.name
-                        ? provider.name.charAt(0).toUpperCase()
-                        : "?"}
-                    </Avatar>
+                    <Avatar src="/broken-image.jpg" />
                     <Box>
                       <Typography variant="subtitle1" fontWeight="bold">
                         {provider.name || "Unknown Provider"}

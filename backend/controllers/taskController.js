@@ -71,10 +71,15 @@ export const getUserTasks = async (req, res) => {
         path: "selectedProviderId",
         select: "name email averageRating",
       })
+      .populate({
+        path: "bids.providerId",
+        select: "name averageRating",
+      })
       .sort({ createdAt: -1 });
 
     res.json(tasks);
   } catch (error) {
+    console.error("getUserTasks error:", error);
     res.status(500).json({ message: error.message });
   }
 };
