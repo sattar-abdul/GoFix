@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 
-const socket = io("http://localhost:5000");
+const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
+
+const socket = io(REACT_APP_API_URL);
 
 const ChatPage = ({ taskId, usertype }) => {
   const [message, setMessage] = useState("");
@@ -11,7 +13,7 @@ const ChatPage = ({ taskId, usertype }) => {
   useEffect(() => {
     socket.emit("joinChat", taskId);
     axios
-      .get(`http://localhost:5000/api/chats/${taskId}`)
+      .get(`${REACT_APP_API_URL}/api/chats/${taskId}`)
       .then((res) => setChat(res.data?.messages || []))
       .catch(() => {});
   }, [taskId]);
@@ -19,7 +21,7 @@ const ChatPage = ({ taskId, usertype }) => {
   const sendMessage = async () => {
     if (!message.trim()) return;
     const data = { taskId, sender: usertype, message };
-    await axios.post("http://localhost:5000/api/chats", data);
+    await axios.post(`${REACT_APP_API_URL}/api/chats`, data);
     socket.emit("sendMessage", { roomId: taskId, ...data });
     setChat((prev) => [...prev, { sender: usertype, message }]);
     setMessage("");
