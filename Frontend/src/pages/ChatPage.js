@@ -13,7 +13,7 @@ const ChatPage = ({ taskId, usertype }) => {
   useEffect(() => {
     socket.emit("joinChat", taskId);
     axios
-      .get(`${REACT_APP_API_URL}/api/chats/${taskId}`)
+      .get(`${REACT_APP_API_URL}/chats/${taskId}`)
       .then((res) => setChat(res.data?.messages || []))
       .catch(() => {});
   }, [taskId]);
@@ -21,7 +21,7 @@ const ChatPage = ({ taskId, usertype }) => {
   const sendMessage = async () => {
     if (!message.trim()) return;
     const data = { taskId, sender: usertype, message };
-    await axios.post(`${REACT_APP_API_URL}/api/chats`, data);
+    await axios.post(`${REACT_APP_API_URL}/chats`, data);
     socket.emit("sendMessage", { roomId: taskId, ...data });
     setChat((prev) => [...prev, { sender: usertype, message }]);
     setMessage("");
