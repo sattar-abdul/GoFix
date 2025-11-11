@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const TaskPost = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -13,7 +15,7 @@ const TaskPost = () => {
     formData.append("description", desc);
     if (image) formData.append("image", image);
 
-    await axios.post("http://localhost:5000/api/tasks", formData, {
+    await axios.post(`${API_BASE_URL}/tasks`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${localStorage.getItem("token")}`,

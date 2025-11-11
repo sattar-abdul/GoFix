@@ -7,6 +7,8 @@ import { useProviderAuth } from "../contexts/ProviderAuthContext.jsx";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
@@ -17,10 +19,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        form
-      );
+      const { data } = await axios.post(`${API_BASE_URL}/auth/login`, form);
 
       // login based on role
       if (data.role === "user") {

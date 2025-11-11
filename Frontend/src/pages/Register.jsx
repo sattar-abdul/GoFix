@@ -15,6 +15,8 @@ import { useProviderAuth } from "../contexts/ProviderAuthContext.jsx";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const roles = [
   { label: "I need a service", value: "user" },
   { label: "I provide a service", value: "provider" },
@@ -48,7 +50,7 @@ const Register = () => {
       }
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${API_BASE_URL}/auth/register`,
         payload
       );
 
