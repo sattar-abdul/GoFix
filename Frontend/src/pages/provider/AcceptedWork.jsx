@@ -109,10 +109,16 @@ export default function AcceptedWork() {
                   flexDirection: "column",
                   justifyContent: "space-between",
                   height: "100%",
+                  maxWidth: 310,
+                  minWidth: 310,
                   width: "100%",
                   wordWrap: "break-word",
                   overflow: "hidden",
                   boxSizing: "border-box",
+                  cursor: "pointer",
+                  "&:hover": {
+                    boxShadow: 3,
+                  },
                 }}
               >
                 <CardContent sx={{ flexGrow: 1 }}>
@@ -144,17 +150,10 @@ export default function AcceptedWork() {
                     sx={{ mb: 1 }}
                   />
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    paragraph
-                    sx={{
-                      wordBreak: "break-word",
-                      overflowWrap: "break-word",
-                      whiteSpace: "normal",
-                    }}
-                  >
-                    {task.description}
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {task.description.length > 100
+                      ? `${task.description.substring(0, 100)}...`
+                      : task.description}
                   </Typography>
 
                   {(task.image || DefaultImg) && (

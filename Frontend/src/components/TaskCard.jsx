@@ -7,8 +7,14 @@ import {
   Chip,
   Button,
   Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 import DefaultImg from "../assets/default-service.jpg";
 
 export default function TaskCard({
@@ -17,21 +23,38 @@ export default function TaskCard({
   openBidsDialog,
   openRatingDialog,
 }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleCardClick = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
   return (
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        height: "100%",
-        width: "100%",
-        wordWrap: "break-word",
-        overflow: "hidden",
-        boxSizing: "border-box",
-      }}
-    >
+    <>
+      <Card
+        onClick={handleCardClick}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "100%",
+          maxWidth: 310,
+          minWidth: 310,
+          width: "100%",
+          wordWrap: "break-word",
+          overflow: "hidden",
+          boxSizing: "border-box",
+          cursor: "pointer",
+          "&:hover": {
+            boxShadow: 3,
+          },
+        }}
+      >
       <CardContent sx={{ flexGrow: 1 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
           <Typography
@@ -72,7 +95,9 @@ export default function TaskCard({
             whiteSpace: "normal",
           }}
         >
-          {task.description}
+          {task.description.length > 100
+            ? `${task.description.substring(0, 100)}...`
+            : task.description}
         </Typography>
 
         <Box sx={{ mt: 1, mb: 1 }}>
@@ -157,5 +182,44 @@ export default function TaskCard({
         )}
       </CardActions>
     </Card>
+
+    <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+      <DialogTitle>
+        {task.title}
+        <IconButton
+          aria-label="close"
+          onClick={handleCloseDialog}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <Box sx={{ mb: 2 }}>
+          <img
+            src={task.image || DefaultImg}
+            alt={task.title}
+            style={{
+              width: "100%",
+              maxHeight: "400px",
+              objectFit: "cover",
+              borderRadius: "4px",
+            }}
+          />
+        </Box>
+        <Typography variant="body1" paragraph>
+          {task.description}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          📍 {task.city}, {task.state}
+        </Typography>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }

@@ -11,8 +11,13 @@ import {
   TextField,
   InputAdornment,
   Alert,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import { tasksAPI, bidsAPI } from "../../utils/api.js";
 import DefaultImg from "../../assets/default-service.jpg";
 
@@ -21,6 +26,8 @@ export default function BrowseJobs() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchTasks();
@@ -48,8 +55,7 @@ export default function BrowseJobs() {
         taskId,
         proposedCost: parseFloat(proposedCost),
         proposedTime: new Date(
-          Date.now() +
-            parseInt(proposedTime) * 24 * 60 * 60 * 1000
+          Date.now() + parseInt(proposedTime) * 24 * 60 * 60 * 1000
         ),
       });
       setMessage("Bid placed successfully! ✅");
@@ -59,19 +65,27 @@ export default function BrowseJobs() {
     }
   };
 
-  // ------- MERGED SEARCH -------
+  const handleCardClick = (task) => {
+    setSelectedTask(task);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setSelectedTask(null);
+  };
+
   const filteredTasks = tasks.filter((task) => {
-  const search = searchTerm.toLowerCase();
+    const search = searchTerm.toLowerCase();
 
-  return (
-    task.title?.toLowerCase().includes(search) ||
-    task.description?.toLowerCase().includes(search) ||
-    task.category?.toLowerCase().includes(search) ||
-    task.city?.toLowerCase().includes(search) ||
-    task.state?.toLowerCase().includes(search)
-  );
-});
-
+    return (
+      task.title?.toLowerCase().includes(search) ||
+      task.description?.toLowerCase().includes(search) ||
+      task.category?.toLowerCase().includes(search) ||
+      task.city?.toLowerCase().includes(search) ||
+      task.state?.toLowerCase().includes(search)
+    );
+  });
 
   if (loading) {
     return <Typography>Loading tasks...</Typography>;
@@ -93,7 +107,7 @@ export default function BrowseJobs() {
         </Alert>
       )}
 
-      {/* ------- MERGED SEARCH BAR ------- */}
+      {/* ------- SEARCH BAR ------- */}
       <TextField
         fullWidth
         placeholder="Search jobs by title, category, description, or city..."
@@ -119,7 +133,25 @@ export default function BrowseJobs() {
         ) : (
           filteredTasks.map((task) => (
             <Grid item xs={12} md={6} lg={4} key={task._id}>
-              <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+              <Card
+                onClick={() => handleCardClick(task)}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "100%",
+                  maxWidth: 310,
+                  minWidth: 310,
+                  width: "100%",
+                  wordWrap: "break-word",
+                  overflow: "hidden",
+                  boxSizing: "border-box",
+                  cursor: "pointer",
+                  "&:hover": {
+                    boxShadow: 3,
+                  },
+                }}
+              >
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" gutterBottom>
                     {task.title}
@@ -132,12 +164,18 @@ export default function BrowseJobs() {
                     sx={{ mb: 1 }}
                   />
 
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 1 }}
+                  >
                     📍 {task.city}, {task.state}
                   </Typography>
 
                   <Typography variant="body2" color="text.secondary" paragraph>
-                    {task.description}
+                    {task.description.length > 100
+                      ? `${task.description.substring(0, 100)}...`
+                      : task.description}
                   </Typography>
 
                   <Typography variant="caption" color="text.secondary">
@@ -181,6 +219,53 @@ export default function BrowseJobs() {
           ))
         )}
       </Grid>
+
+      <Dialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>
+          {selectedTask?.title}
+          <IconButton
+            aria-label="close"
+            onClick={handleCloseDialog}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {selectedTask && (
+            <>
+              <Box sx={{ mb: 2 }}>
+                <img
+                  src={selectedTask.image || DefaultImg}
+                  alt={selectedTask.title}
+                  style={{
+                    width: "100%",
+                    maxHeight: "400px",
+                    objectFit: "cover",
+                    borderRadius: "4px",
+                  }}
+                />
+              </Box>
+              <Typography variant="body1" paragraph>
+                {selectedTask.description}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                📍 {selectedTask.city}, {selectedTask.state}
+              </Typography>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
