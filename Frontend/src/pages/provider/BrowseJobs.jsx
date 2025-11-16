@@ -28,7 +28,7 @@ export default function BrowseJobs() {
 
   const fetchTasks = async () => {
     try {
-      const response = await tasksAPI.getTasks();
+      const response = await tasksAPI.getTasks({});
       setTasks(response.data);
     } catch (error) {
       setMessage("Failed to fetch tasks");
@@ -40,27 +40,38 @@ export default function BrowseJobs() {
   const handlePlaceBid = async (taskId) => {
     const proposedCost = prompt("Enter your proposed cost:");
     const proposedTime = prompt("Enter time of arrival (e.g., '2 days'):");
-    
+
     if (!proposedCost || !proposedTime) return;
 
     try {
       await bidsAPI.placeBid({
         taskId,
         proposedCost: parseFloat(proposedCost),
-        proposedTime: new Date(Date.now() + parseInt(proposedTime) * 24 * 60 * 60 * 1000),
+        proposedTime: new Date(
+          Date.now() +
+            parseInt(proposedTime) * 24 * 60 * 60 * 1000
+        ),
       });
       setMessage("Bid placed successfully! ✅");
-      fetchTasks(); // Refresh tasks
+      fetchTasks();
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to place bid");
     }
   };
 
-  const filteredTasks = tasks.filter(task =>
-    task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    task.category.toLowerCase().includes(searchTerm.toLowerCase())
+  // ------- MERGED SEARCH -------
+  const filteredTasks = tasks.filter((task) => {
+  const search = searchTerm.toLowerCase();
+
+  return (
+    task.title?.toLowerCase().includes(search) ||
+    task.description?.toLowerCase().includes(search) ||
+    task.category?.toLowerCase().includes(search) ||
+    task.city?.toLowerCase().includes(search) ||
+    task.state?.toLowerCase().includes(search)
   );
+});
+
 
   if (loading) {
     return <Typography>Loading tasks...</Typography>;
@@ -73,8 +84,8 @@ export default function BrowseJobs() {
       </Typography>
 
       {message && (
-        <Alert 
-          severity={message.includes("successfully") ? "success" : "error"} 
+        <Alert
+          severity={message.includes("successfully") ? "success" : "error"}
           sx={{ mb: 2 }}
           onClose={() => setMessage("")}
         >
@@ -82,9 +93,10 @@ export default function BrowseJobs() {
         </Alert>
       )}
 
+      {/* ------- MERGED SEARCH BAR ------- */}
       <TextField
         fullWidth
-        placeholder="Search jobs by title, description, or category..."
+        placeholder="Search jobs by title, category, description, or city..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         sx={{ mb: 3 }}
@@ -99,61 +111,65 @@ export default function BrowseJobs() {
 
       <Grid container spacing={2}>
         {filteredTasks.length === 0 ? (
-          <Grid size={12}>
+          <Grid item xs={12}>
             <Typography variant="body1" color="text.secondary">
               No jobs found matching your search.
             </Typography>
           </Grid>
         ) : (
           filteredTasks.map((task) => (
-            <Grid size={{ xs: 12, md: 6, lg: 4 }} key={task._id}>
-              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Grid item xs={12} md={6} lg={4} key={task._id}>
+              <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" gutterBottom>
                     {task.title}
                   </Typography>
-                  
-                  <Chip 
-                    label={task.category} 
-                    color="primary" 
-                    size="small" 
+
+                  <Chip
+                    label={task.category}
+                    color="primary"
+                    size="small"
                     sx={{ mb: 1 }}
                   />
-                  
+
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    📍 {task.city}, {task.state}
+                  </Typography>
+
                   <Typography variant="body2" color="text.secondary" paragraph>
                     {task.description}
                   </Typography>
-                  
+
                   <Typography variant="caption" color="text.secondary">
-                    Posted by: {task.userId?.name || 'Unknown'}
+                    Posted by: {task.userId?.name || "Unknown"}
                     {task.userId?.averageRating && (
                       <span> (⭐ {task.userId.averageRating})</span>
                     )}
                   </Typography>
-                  
+
                   {(task.image || DefaultImg) && (
                     <Box sx={{ mt: 1 }}>
-                      <img 
-                        src={task.image || DefaultImg} 
+                      <img
+                        src={task.image || DefaultImg}
                         alt={task.title}
-                        style={{ 
-                          width: '100%', 
-                          height: '150px', 
-                          objectFit: 'cover',
-                          borderRadius: '4px'
+                        style={{
+                          width: "100%",
+                          height: "150px",
+                          objectFit: "cover",
+                          borderRadius: "4px",
                         }}
                       />
                     </Box>
                   )}
-                  
+
                   <Typography variant="caption" display="block" sx={{ mt: 1 }}>
                     Bids: {task.bids?.length || 0}
                   </Typography>
                 </CardContent>
-                
+
                 <CardActions>
-                  <Button 
-                    variant="contained" 
+                  <Button
+                    variant="contained"
                     onClick={() => handlePlaceBid(task._id)}
                     fullWidth
                   >

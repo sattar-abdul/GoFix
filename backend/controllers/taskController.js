@@ -27,6 +27,8 @@ export const postTask = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       category: req.body.category,
+      city: req.body.city,
+      state: req.body.state,
       image: imageUrl,
     });
 
@@ -55,7 +57,12 @@ export const postTask = async (req, res) => {
 
 export const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ status: "open" })
+    const { city } = req.query;
+    const filter = { status: "open" };
+    if (city) {
+      filter.city = { $regex: city, $options: "i" }; // Case-insensitive search
+    }
+    const tasks = await Task.find(filter)
       .populate("userId", "name email")
       .sort({ createdAt: -1 });
     res.json(tasks);

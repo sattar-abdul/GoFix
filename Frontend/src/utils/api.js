@@ -36,7 +36,7 @@ export const authAPI = {
 
 // Tasks API
 export const tasksAPI = {
-  getTasks: () => api.get("/tasks"),
+  getTasks: (params = {}) => api.get("/tasks", { params }),
   getUserTasks: () => api.get("/tasks/my-tasks"),
   getAssignedTasks: () => api.get("/tasks/assigned/me"),
   createTask: (taskData) => {
@@ -44,6 +44,8 @@ export const tasksAPI = {
     formData.append("title", taskData.title);
     formData.append("description", taskData.description);
     formData.append("category", taskData.category);
+    formData.append("city", taskData.city);
+    formData.append("state", taskData.state);
     if (taskData.image) {
       formData.append("image", taskData.image);
     }

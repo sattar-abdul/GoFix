@@ -29,6 +29,8 @@ export default function PostServiceRequest() {
     title: "",
     description: "",
     category: "",
+    city: "",
+    state: "",
   });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -49,7 +51,7 @@ export default function PostServiceRequest() {
       setMessage("Service Request Submitted Successfully! ✅");
       
       // Reset form
-      setFormData({ title: "", description: "", category: "" });
+      setFormData({ title: "", description: "", category: "", city: "", state: "" });
       setImage(null);
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to submit request");
@@ -122,6 +124,26 @@ export default function PostServiceRequest() {
                 </option>
               ))}
             </TextField>
+
+            <TextField
+              label="City"
+              fullWidth
+              required
+              value={formData.city}
+              onChange={(e) =>
+                setFormData({ ...formData, city: e.target.value })
+              }
+            />
+
+            <TextField
+              label="State"
+              fullWidth
+              required
+              value={formData.state}
+              onChange={(e) =>
+                setFormData({ ...formData, state: e.target.value })
+              }
+            />
 
             <Box>
               <Typography variant="body2" gutterBottom>
