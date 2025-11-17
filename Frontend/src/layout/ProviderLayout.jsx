@@ -29,7 +29,7 @@ export default function ProviderLayout() {
   };
 
   const menuItems = [
-    { text: "Dashboard Home", path: "/provider/dashboard" },
+    { text: "Home", path: "/provider/dashboard" },
     { text: "Browse Jobs", path: "/provider/browse" },
     { text: "My Bids", path: "/provider/bids" },
     { text: "Accepted Work", path: "/provider/work" },

@@ -29,7 +29,7 @@ export default function UserLayout() {
   };
 
   const menuItems = [
-    { text: "Dashboard Home", path: "/user/dashboard" },
+    { text: "Home", path: "/user/dashboard" },
     { text: "Post a Service Request", path: "/user/post-request" },
     { text: "My Job Requests", path: "/user/requests" },
   ];
