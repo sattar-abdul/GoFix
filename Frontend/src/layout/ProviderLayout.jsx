@@ -30,6 +30,7 @@ export default function ProviderLayout() {
 
   const menuItems = [
     { text: "Home", path: "/provider/dashboard" },
+    { text: "Analytics", path: "/provider/analytics" },
     { text: "Browse Jobs", path: "/provider/browse" },
     { text: "My Bids", path: "/provider/bids" },
     { text: "Accepted Work", path: "/provider/work" },

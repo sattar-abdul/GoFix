@@ -37,6 +37,8 @@ A full-stack web application that connects users who need services with service 
 - **React Router** for navigation
 - **Axios** for API calls
 - **Context API** for state management
+- **Open Stree Map** for Visual Bidings
+- **recharts** for user and provider analytics (Graphs)
 
 ## Project Structure
 

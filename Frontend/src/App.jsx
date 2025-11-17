@@ -32,6 +32,7 @@ import ChatPage from "./pages/ChatPage.jsx";
 import LandingPage from './components/LandingPage.jsx';
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme.js";
+import ProviderAnalytics from "./pages/provider/ProviderAnalytics.jsx";
 
 function App() {
 
@@ -72,6 +73,7 @@ function App() {
               }
             >
               <Route path="dashboard" element={<ProviderDashboard />} />
+              <Route path="analytics" element={<ProviderAnalytics />} />
               <Route path="browse" element={<BrowseJobs />} />
               <Route path="bids" element={<MyBids />} />
               <Route path="work" element={<AcceptedWork />} />
