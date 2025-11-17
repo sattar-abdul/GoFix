@@ -127,7 +127,7 @@ export default function MyBids() {
                           Your Bid Details:
                         </Typography>
                         <Typography variant="body2">
-                          <strong>Proposed Cost:</strong> ${userBid.proposedCost}
+                          <strong>Proposed Cost:</strong> ₹{userBid.proposedCost}
                         </Typography>
                         <Typography variant="body2">
                           <strong>Proposed Time:</strong> {new Date(userBid.proposedTime).toLocaleDateString()}

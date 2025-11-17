@@ -84,6 +84,7 @@ const LandingPage = () => {
                   Post tasks, get bids, and chat in real-time.
                 </Typography>
 
+                {/* Search bar */}
                 <div className="search-container">
                   <TextField
                     fullWidth
@@ -94,7 +95,7 @@ const LandingPage = () => {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton className="search-btn">
+                          <IconButton className="search-btn" href="/register">
                             <Search />
                           </IconButton>
                         </InputAdornment>

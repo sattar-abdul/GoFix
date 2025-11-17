@@ -15,6 +15,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  MenuItem
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -25,6 +26,7 @@ export default function BrowseJobs() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("");
   const [message, setMessage] = useState("");
   const [selectedTask, setSelectedTask] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -75,6 +77,7 @@ export default function BrowseJobs() {
     setSelectedTask(null);
   };
 
+  // Search bar
   const filteredTasks = tasks.filter((task) => {
     const search = searchTerm.toLowerCase();
 
@@ -86,6 +89,33 @@ export default function BrowseJobs() {
       task.state?.toLowerCase().includes(search)
     );
   });
+
+  // Sorting
+  const applySorting = (tasksList) => {
+    if (sortOption === "newest") {
+      return [...tasksList].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    }
+    if (sortOption === "oldest") {
+      return [...tasksList].sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+    }
+    if (sortOption === "lowestBids") {
+      return [...tasksList].sort(
+        (a, b) => (a.bids?.length || 0) - (b.bids?.length || 0)
+      );
+    }
+    if (sortOption === "highestBids") {
+      return [...tasksList].sort(
+        (a, b) => (b.bids?.length || 0) - (a.bids?.length || 0)
+      );
+    }
+    return tasksList;
+  };
+
+  const finalTask = applySorting(filteredTasks);
 
   if (loading) {
     return <Typography>Loading tasks...</Typography>;
@@ -108,12 +138,13 @@ export default function BrowseJobs() {
       )}
 
       {/* ------- SEARCH BAR ------- */}
+      <div display="flex">
       <TextField
-        fullWidth
         placeholder="Search jobs by title, category, description, or city..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        sx={{ mb: 3 }}
+        sx={{ mb: 3, mr: 2, width: "65%" }}
+        
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -123,15 +154,32 @@ export default function BrowseJobs() {
         }}
       />
 
+      {/* Sorting Dropdown */}
+      <TextField
+        select
+        label="Sort By"
+        value={sortOption}
+        onChange={(e) => setSortOption(e.target.value)}
+        wi
+        sx={{ mb: 3, width: "25%" }}
+      >
+        <MenuItem value="">None</MenuItem>
+        <MenuItem value="newest">Newest First</MenuItem>
+        <MenuItem value="oldest">Oldest First</MenuItem>
+        <MenuItem value="lowestBids">Lowest Bids</MenuItem>
+        <MenuItem value="highestBids">Highest Bids</MenuItem>
+      </TextField>
+      </div>
+
       <Grid container spacing={2}>
-        {filteredTasks.length === 0 ? (
+        {finalTask.length === 0 ? (
           <Grid item xs={12}>
             <Typography variant="body1" color="text.secondary">
               No jobs found matching your search.
             </Typography>
           </Grid>
         ) : (
-          filteredTasks.map((task) => (
+          finalTask.map((task) => (
             <Grid item xs={12} md={6} lg={4} key={task._id}>
               <Card
                 onClick={() => handleCardClick(task)}
