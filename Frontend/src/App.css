@@ -37,3 +37,8 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #FF5252;
 }
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}

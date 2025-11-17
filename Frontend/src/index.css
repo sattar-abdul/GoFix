@@ -1,3 +1,8 @@
 body {
   padding-top: 64px; /* appbar height */
 }
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}

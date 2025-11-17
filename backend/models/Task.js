@@ -1,11 +1,18 @@
 import mongoose from "mongoose";
 
-const bidSchema = new mongoose.Schema({
-  providerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  proposedCost: Number,
-  proposedTime: Date,
-  status: { type: String, default: "pending" }, // pending/accepted/rejected
-}, { timestamps: true });
+const bidSchema = new mongoose.Schema(
+  {
+    providerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    proposedCost: Number,
+    proposedTime: Date,
+    location: {
+      lat: { type: Number },
+      lng: { type: Number },
+    },
+    status: { type: String, default: "pending" }, // pending/accepted/rejected
+  },
+  { timestamps: true }
+);
 
 const taskSchema = new mongoose.Schema(
   {
@@ -27,8 +34,8 @@ const taskSchema = new mongoose.Schema(
     rating: {
       score: { type: Number, min: 1, max: 5 },
       review: { type: String },
-      ratedAt: { type: Date }
-    }
+      ratedAt: { type: Date },
+    },
   },
   { timestamps: true }
 );

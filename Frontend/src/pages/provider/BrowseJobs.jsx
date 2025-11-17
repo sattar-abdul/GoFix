@@ -1,3 +1,4 @@
+// src/pages/provider/BrowseJobs.jsx
 import { useState, useEffect } from "react";
 import {
   Typography,
@@ -15,7 +16,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -52,15 +53,49 @@ export default function BrowseJobs() {
 
     if (!proposedCost || !proposedTime) return;
 
+    // 1️⃣ Get provider location
+    const getLocation = () =>
+      new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          return reject("Geolocation not supported");
+        }
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            resolve({
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude,
+            });
+          },
+          (err) => reject(err.message),
+          { enableHighAccuracy: true }
+        );
+      });
+
+    let location = null;
+
     try {
+      location = await getLocation();
+    } catch (error) {
+      const fallback = confirm(
+        "Unable to get your location. Do you want to send bid without location?"
+      );
+      if (!fallback) return;
+
+      location = null; // allow bid without location
+    }
+
+    try {
+      // 2️⃣ Send location in API
       await bidsAPI.placeBid({
         taskId,
         proposedCost: parseFloat(proposedCost),
         proposedTime: new Date(
           Date.now() + parseInt(proposedTime) * 24 * 60 * 60 * 1000
         ),
+        location, // <----- important
       });
-      setMessage("Bid placed successfully! ✅");
+
+      setMessage("Bid placed successfully with location! ✅");
       fetchTasks();
     } catch (error) {
       setMessage(error.response?.data?.message || "Failed to place bid");
@@ -139,36 +174,35 @@ export default function BrowseJobs() {
 
       {/* ------- SEARCH BAR ------- */}
       <div display="flex">
-      <TextField
-        placeholder="Search jobs by title, category, description, or city..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        sx={{ mb: 3, mr: 2, width: "65%" }}
-        
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
+        <TextField
+          placeholder="Search jobs by title, category, description, or city..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ mb: 3, mr: 2, width: "65%" }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
 
-      {/* Sorting Dropdown */}
-      <TextField
-        select
-        label="Sort By"
-        value={sortOption}
-        onChange={(e) => setSortOption(e.target.value)}
-        wi
-        sx={{ mb: 3, width: "25%" }}
-      >
-        <MenuItem value="">None</MenuItem>
-        <MenuItem value="newest">Newest First</MenuItem>
-        <MenuItem value="oldest">Oldest First</MenuItem>
-        <MenuItem value="lowestBids">Lowest Bids</MenuItem>
-        <MenuItem value="highestBids">Highest Bids</MenuItem>
-      </TextField>
+        {/* Sorting Dropdown */}
+        <TextField
+          select
+          label="Sort By"
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          wi
+          sx={{ mb: 3, width: "25%" }}
+        >
+          <MenuItem value="">None</MenuItem>
+          <MenuItem value="newest">Newest First</MenuItem>
+          <MenuItem value="oldest">Oldest First</MenuItem>
+          <MenuItem value="lowestBids">Lowest Bids</MenuItem>
+          <MenuItem value="highestBids">Highest Bids</MenuItem>
+        </TextField>
       </div>
 
       <Grid container spacing={2}>

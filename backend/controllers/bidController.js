@@ -4,11 +4,18 @@ import sendEmail from "../utils/sendEmail.js";
 
 export const placeBid = async (req, res) => {
   try {
-    const { taskId, proposedCost, proposedTime } = req.body;
+    const { taskId, proposedCost, proposedTime, location } = req.body;
     const task = await Task.findById(taskId);
     if (!task) return res.status(404).json({ message: "Task not found" });
 
-    const newBid = { providerId: req.user.id, proposedCost, proposedTime };
+    // ⭐ Add location to bid
+    const newBid = { 
+      providerId: req.user.id, 
+      proposedCost, 
+      proposedTime,
+      location            // <---- NEW
+    };
+
     task.bids.push(newBid);
     await task.save();
 
