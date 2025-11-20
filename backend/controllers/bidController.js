@@ -13,7 +13,7 @@ export const placeBid = async (req, res) => {
       providerId: req.user.id, 
       proposedCost, 
       proposedTime,
-      location            // <---- NEW
+      location            
     };
 
     task.bids.push(newBid);

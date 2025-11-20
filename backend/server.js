@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import bidRoutes from "./routes/bidRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -20,6 +21,7 @@ app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/bids", bidRoutes);
 app.use("/chat", chatRoutes);
+app.use("/ai", aiRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
